@@ -1,0 +1,24 @@
+{
+  "name": "stripe_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "body-parser": "^1.19.0",
+    "boom": "^7.3.0",
+    "connect-multiparty": "^2.2.0",
+    "express": "^4.17.1",
+    "stripe": "^7.9.1"
+  }
+}
