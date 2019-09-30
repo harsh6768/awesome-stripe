@@ -4,7 +4,61 @@ const boom=require('boom');  //for handling http errors
 const BlueBird=require('bluebird');
 const fs = BlueBird.promisifyAll(require("fs"));
 
+let createCardToken=(req,res)=>{
 
+    const {
+
+        number,
+        exp_month,
+        exp_year,
+        cvc,
+        name,
+        address_line1,
+        address_line2,
+        address_zip,
+        address_city,
+        address_state,
+        address_country
+
+    }=req.body
+
+
+    try{
+   
+        stripe.tokens.create({
+
+            card:{
+                number,
+                exp_month,
+                exp_year,
+                cvc,
+                name,
+                address_line1,
+                address_line2,
+                address_city,
+                address_zip,
+                address_state,
+                address_country
+            }
+        
+        })
+        .then(token=>res.send({
+            status:200,
+            body:token,
+            message:'Card token generated Successfully!'
+        }))
+        .catch(err=>res.send({
+            status:400,
+            body:err,
+            message:'Error occured'
+        }))
+
+    }catch(err){
+        throw boom.boomify();
+
+    }
+
+}
 let createAccountToken=(req,res)=>{
 
     console.log(req.body)
@@ -243,6 +297,7 @@ let createPayout=(req,res)=>{
 
 }
 module.exports={
+    createCardToken,
     createAccountToken,
     createAccount,
     getAccountDetails,
