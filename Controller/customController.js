@@ -59,6 +59,49 @@ let createCardToken=(req,res)=>{
     }
 
 }
+
+let createCustomer=(req,res)=>{
+
+    const {
+        card_token_id,
+        name,
+        email,
+        phone,
+        description
+
+    }=req.body
+
+    try{
+
+        stripe.customers.create({
+
+            source:card_token_id,
+            name,
+            email,
+            phone,
+            description
+
+        })
+        .then(customer=>res.send({
+            status:200,
+            body:customer,
+            message:'Customer Created Successfully!'
+        }))
+        .catch(err=>res.send({
+            status:400,
+            body:err,
+            message:'Error occured!'
+        }))
+
+    }catch(err){
+        throw boom.boomify();
+    }
+
+}
+let createCharge=(req,res)=>{
+
+}
+
 let createAccountToken=(req,res)=>{
 
     console.log(req.body)
@@ -298,6 +341,8 @@ let createPayout=(req,res)=>{
 }
 module.exports={
     createCardToken,
+    createCustomer,
+    createCharge,
     createAccountToken,
     createAccount,
     getAccountDetails,
