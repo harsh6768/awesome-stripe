@@ -9,6 +9,9 @@ I this scenario We have taken Uber.In this scenario
 2. Some custom accounts will play a roal of uber drivers 
 3. Some custom accounts will play a roal of owners of cabs
 
+##Refer Stripe Api documentation for all the methods used to implement this scenario
+https://stripe.com/docs/api
+
 Project will have many apis which can be test by using POSTMAN.
 1. Create Token For Cards ---> create.tokens.create()
 2. Create Customer ---> stripe.customers.create()
@@ -20,5 +23,5 @@ Project will have many apis which can be test by using POSTMAN.
 8. Transfer Funds to the destination account ---> stripe.transfers.create()
 8. Transfer Amount from Uber platform to uber drivers and the owner using grouping transactions https://stripe.com/docs/connect/charges-transfers
 9. Transfer the Amount from Uber Platform to the uber drivers at a time of charge ---> stripe.charges.create() by providing the values into the transfer_data property 
-10. Get the details of the Account.
+10. Get the details of the Account ---> stripe.accounts.retrieve() 
 
