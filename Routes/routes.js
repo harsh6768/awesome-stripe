@@ -16,4 +16,7 @@ Router.route('/account/get_details/:account_id').get(customController.getAccount
 Router.route('/transfer_amount').post(multipartMiddleware,customController.transferAmount);
 Router.route('/create_payout').post(multipartMiddleware,customController.createPayout);
 
+Router.route('/seperate_group_transfer').post(multipartMiddleware,customController.seperateGroupTransfer);
+Router.route('/sepereate_transfer_at_time_of_charge').post(multipartMiddleware,customController.seperateTransferAtTimeOfCharged);
+
 module.exports=Router;

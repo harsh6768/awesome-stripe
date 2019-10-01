@@ -98,7 +98,47 @@ let createCustomer=(req,res)=>{
     }
 
 }
+
 let createCharge=(req,res)=>{
+
+    // console.log(req.body);
+
+    // const {
+
+    //     amount,
+    //     currency,
+    //     customer_id,
+    //     description,
+    //     capture
+
+    // }=req.body;
+
+
+    // try{
+
+    //     stripe.charges.create({
+    //         amount,
+    //         currency,
+    //         source:customer_id,
+    //         description,
+    //         capture
+    //     })
+    //     .then(charges=>res.send({
+
+    //         status:200,
+    //         body:charges,
+    //         message:'Charges created successfully!'
+    //     }))
+    //     .catch(err=>res.send({
+    //         status:400,
+    //         body:err,
+    //         message:'Error occured!'
+    //     }))
+
+
+    // }catch(err){
+    //     throw boom.boomify();
+    // }
 
 }
 
@@ -126,8 +166,6 @@ let createAccountToken=(req,res)=>{
     const {
         file
     }=req.files
-
-    
 
     const userDob=dob.split('/')||dob.split('-');
     const day=userDob[0];
@@ -339,6 +377,127 @@ let createPayout=(req,res)=>{
     }
 
 }
+
+//Grouping transactions
+//https://stripe.com/docs/connect/charges-transfers#grouping-transactions-charges
+let seperateGroupTransfer=async(req,res)=>{
+
+
+    //declare transfer_group at a time of charges for group transaction
+
+    // stripe.charges.create({
+    //     amount: 10000,
+    //     currency: "usd",
+    //     source: "tok_visa",
+    //     transfer_group: "{ORDER10}",
+    // }).then(function(charge) {
+    //     // asynchronously called
+    // });
+  
+    console.log(req.body);
+    const {
+
+        acc1_amount,
+        acc1_currency,
+        acc1_destination,
+        acc2_amount,
+        acc2_currency,
+        acc2_destination
+
+    }=req.body;
+
+    let amount1=parseInt(acc1_amount);
+    let amount2=parseInt(acc2_amount)
+    try{
+
+      let transfer_in_acc1=await stripe.transfers.create({
+
+            amount:amount1,
+            currency:acc1_currency,
+            destination:acc1_destination,
+            transfer_group:'ORDER1'
+
+       })
+
+       let transfer_in_acc2=await stripe.transfers.create({
+
+           amount:amount2,
+           currency:acc2_currency,
+           destination:acc2_destination
+       });
+
+       if(transfer_in_acc1 && transfer_in_acc2){
+
+            res.send({
+                status:200,
+                body:[transfer_in_acc1,transfer_in_acc2],
+                message:'Successfully transfered using seperate transfer to connected account!'
+            })
+       }else{
+           res.send({
+               status:400,
+               body:'Error occured!'
+           })
+       }
+        
+
+    }catch(err){
+
+        throw boom.boomify();
+
+    }
+
+}
+let seperateTransferAtTimeOfCharged=(req,res)=>{
+
+    const {
+
+        amount,
+        currency,
+        source,
+        acc1_id,
+        acc2_id,
+        application_fee_amount 
+
+    }=req.body;
+
+
+    console.log(req.body);
+
+    try{
+
+        stripe.charges.create({
+
+            amount,
+            currency,
+            source,
+            application_fee_amount, 
+            // on_behalf_of:[acc1_id,acc2_id]
+            transfer_data:{ //to transfer the amount using seperate or splitting
+                    destination:acc1_id, //acount id of the drivers account
+                    amount:250,
+            },
+        })
+        .then(charges=>res.send({
+
+            status:200,
+            body:charges,
+            message:'Successfully created chareges!'
+
+        }))
+        .catch(err=>res.send({
+            status:200,
+            body:err,
+            message:'Error occured!'
+        }))
+
+
+    }catch(err){
+        
+        throw boom.boomify();
+    }
+
+}
 module.exports={
     createCardToken,
     createCustomer,
@@ -347,5 +506,7 @@ module.exports={
     createAccount,
     getAccountDetails,
     transferAmount,
-    createPayout
+    createPayout,
+    seperateGroupTransfer,
+    seperateTransferAtTimeOfCharged
 }

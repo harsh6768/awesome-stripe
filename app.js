@@ -6,7 +6,6 @@ const routes=require('./Routes/routes');
 
 const app=express();
 
-
 //BodyParser
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
