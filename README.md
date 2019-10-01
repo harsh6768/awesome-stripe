@@ -9,7 +9,7 @@ I this scenario We have taken Uber.In this scenario
 2. Some custom accounts will play a roal of uber drivers 
 3. Some custom accounts will play a roal of owners of cabs
 
-##Refer Stripe Api documentation for all the methods used to implement this scenario
+## Refer Stripe Api documentation for all the methods used to implement this scenario
 https://stripe.com/docs/api
 
 Project will have many apis which can be test by using POSTMAN.
