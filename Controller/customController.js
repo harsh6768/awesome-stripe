@@ -144,7 +144,7 @@ let createCharge=(req,res)=>{
 
 let createAccountToken=(req,res)=>{
 
-    console.log(req.body)
+    // console.log(req.body)
     const {
 
         business_type,
@@ -473,10 +473,12 @@ let seperateTransferAtTimeOfCharged=(req,res)=>{
             source,
             application_fee_amount, 
             // on_behalf_of:[acc1_id,acc2_id]
-            transfer_data:{ //to transfer the amount using seperate or splitting
+            transfer_data:[
+                { //to transfer the amount using seperate or splitting
                     destination:acc1_id, //acount id of the drivers account
                     amount:250,
-            },
+                }          
+           ],
         })
         .then(charges=>res.send({
 
@@ -498,6 +500,7 @@ let seperateTransferAtTimeOfCharged=(req,res)=>{
     }
 
 }
+
 module.exports={
     createCardToken,
     createCustomer,
