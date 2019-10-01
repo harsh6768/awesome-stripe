@@ -25,3 +25,32 @@ Project will have many apis which can be test by using POSTMAN.
 9. Transfer the Amount from Uber Platform to the uber drivers at a time of charge ---> stripe.charges.create() by providing the values into the transfer_data property 
 10. Get the details of the Account ---> stripe.accounts.retrieve() 
 
+Problem Statement:
+1. How to charge from the Customer--->
+   To Implement This Scenario ,
+   1. First of all, we need to create the Stripe and then get the test secret key.
+   2. Create Card or Account Token 
+   3. Create Customer 
+   4. Create Charges from the user 
+
+2. How to capture the amount---> Like We need to have the 300Rs. before paying the money using patym after cab ride.
+   1. Create Charges ---> For creating the charges you need to follow the abover steps from Problem statement 1.
+      pass the property capture:false so that we can capture the charges after that
+   2. Capture the Charges --->
+3. How to payout the Driver from Uber Platform Stripe Account
+   
+   1. Create Transfer by passing the destination
+   2. Payout the drivers from stripe account to the bank account
+4. How to transfer the funds from Uber Platform to 2 Custom Account in which One custom account play a roal of Driver and        another account will play a roal of owner--> We will use grouping transaction 
+
+  1. Create Charges by passing the one extra property transfer_group and pass unique value in it.
+  2. Use create transfer method seperately by specifying trasnfer_group property 
+  
+5. How to transfer the funds from Uber Platform to Uber drivers at a time of creating charges.
+  
+  1. Create Charges and pass the destination and the amount in transfer_data property
+     
+         transfer_data:{ 
+                    destination:acc1_id,
+                    amount:250,
+         }
